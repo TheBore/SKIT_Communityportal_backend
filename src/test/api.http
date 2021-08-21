@@ -1,0 +1,2 @@
+GET http://localhost:9091/rest/institution/all/moderators
+Accept: application/json

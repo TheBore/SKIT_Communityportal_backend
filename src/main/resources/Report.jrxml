@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report" pageWidth="595" pageHeight="1385" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56c97b29-38af-4aa0-a66c-259cf74aa7a0">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="net.sf.jasperreports.default.pdf.encoding" value="Cp1250"/>
+    <style name="style1" isDefault="true" pdfEncoding="Cp1252"/>
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+    <field name="imatel" class="java.lang.String"/>
+    <field name="sluzbLice" class="java.lang.String"/>
+    <field name="podatociSluzbLice" class="java.lang.String"/>
+    <field name="brPrimeniBaranja" class="java.lang.Integer"/>
+    <field name="brPozitivnoOdgBaranja" class="java.lang.Integer"/>
+    <field name="odbieniIOtfrleniZalbi" class="java.lang.String"/>
+    <field name="brNeodogovoreniBaranja" class="java.lang.Integer"/>
+    <field name="vlozeniZalbi" class="java.lang.String"/>
+    <field name="brUsvoeniZalbi" class="java.lang.Integer"/>
+    <field name="brPreinaceniOdluki" class="java.lang.Integer"/>
+    <field name="odbieniZalbi" class="java.lang.String"/>
+    <field name="otfrelniZalbi" class="java.lang.String"/>
+    <field name="imatelInfo" class="java.lang.String"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="131" splitType="Stretch">
+            <staticText>
+                <reportElement style="style1" x="80" y="-10" width="400" height="30" uuid="c57bae3c-c1ad-48c0-ac72-c36cf1dc71bb"/>
+                <textElement>
+                    <font fontName="SansSerif"/>
+                </textElement>
+                <text><![CDATA[Согласно член 36 од Законот за слободен пристап до информации од јавен карактер („Сл. весник на Р.С.М. бр.101/2019)]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="70" y="30" width="410" height="30" uuid="7288c7c9-548b-44ad-805f-74adb675cd6b">
+                    <property name="com.jaspersoft.studio.unit.width" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[___________________________________________________________________________]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="220" y="30" width="100" height="30" uuid="1261486d-2f2b-4d6b-add1-addd7d91afb3"/>
+                <textFieldExpression><![CDATA[$F{imatel}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="75" y="49" width="405" height="30" uuid="4843e93d-de3d-4db5-9685-cf14cfca08c9"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[___________________________________________________________________________]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="212" y="50" width="100" height="20" uuid="2666e49b-14dd-4b7a-a920-5bc5be0ccb6c"/>
+                <textFieldExpression><![CDATA[$F{sluzbLice}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="80" y="70" width="240" height="30" uuid="418c8838-ce2f-4e33-8437-ca68db227b13"/>
+                <text><![CDATA[го изготви следниот]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="73" y="90" width="374" height="21" uuid="4d6ee6f4-053e-4f04-813a-f7aa391949c8"/>
+                <textElement textAlignment="Center">
+                    <font size="14"/>
+                </textElement>
+                <text><![CDATA[ГОДИШЕН ИЗВЕШТАЈ]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="144" splitType="Stretch">
+            <staticText>
+                <reportElement x="60" y="0" width="420" height="30" uuid="11778ba2-e82e-41e8-9b66-3231d4f7838e"/>
+                <text><![CDATA[1. Податоци за службените лица определени за посредување со информации кај имателите на информации:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="70" y="30" width="410" height="30" uuid="02058af9-2891-4361-9adb-19bb7c9e2577"/>
+                <textFieldExpression><![CDATA[$F{podatociSluzbLice}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="60" width="152" height="30" uuid="21272e7d-3f01-45d6-8b26-1bb171b4e915"/>
+                <text><![CDATA[2. Број на примени барања:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="210" y="60" width="100" height="30" uuid="a55aff9d-9ba8-45eb-b298-af6bdb5bed9a"/>
+                <textFieldExpression><![CDATA[$F{brPrimeniBaranja}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="111" width="420" height="30" uuid="d27461d7-4ab3-45a8-a1c1-fa8dffad6c0b"/>
+                <text><![CDATA[3. Број на позитивно одговорени барања:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="290" y="111" width="100" height="30" uuid="179a4721-3440-4069-b3c2-9124b9cfeba0"/>
+                <textFieldExpression><![CDATA[$F{brPozitivnoOdgBaranja}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="765" splitType="Stretch">
+            <staticText>
+                <reportElement x="60" y="22" width="420" height="30" uuid="30996a6b-8d01-48ee-9b05-11ab08320b12"/>
+                <textElement>
+                    <font fontName="SansSerif"/>
+                </textElement>
+                <text><![CDATA[4. Број на одбиени и отфрлени барања со наведување на причините за секое одбиено или отфрлено барање:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="60" y="52" width="420" height="58" uuid="406fd8b3-b4ce-497e-bd14-f469693803d3"/>
+                <textFieldExpression><![CDATA[$F{odbieniIOtfrleniZalbi}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="110" width="180" height="30" uuid="13839c06-9c1a-4724-8f8b-70a9810d3c27"/>
+                <text><![CDATA[5. Број на неодговорени барања:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="240" y="110" width="100" height="30" uuid="e91897e7-40f4-49c1-9e7b-6392631a8f21"/>
+                <textFieldExpression><![CDATA[$F{brNeodogovoreniBaranja}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="142" width="420" height="48" uuid="41224f68-0da4-4049-a76d-e6567ce41a12"/>
+                <text><![CDATA[6.Број на вложени жалби против првостепени одлуки (решенија на имателите на информации, со опис на одлуката, како и со наведување на причините за донесената одлука во случај на повторно одбивање на бараната информација):]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="60" y="200" width="420" height="120" uuid="0221a20f-53b6-4d4d-990d-97baa602835b"/>
+                <textFieldExpression><![CDATA[$F{vlozeniZalbi}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="330" width="280" height="30" uuid="dc2eeae0-fe76-4d8d-8296-f95e6655104e"/>
+                <text><![CDATA[7.  Број на усвоени жалби со одлука на Агенцијата:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="340" y="330" width="100" height="30" uuid="e1c87ec0-b350-4792-b482-d454bde58b14">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97ff1469-5cac-4717-a166-d25ecf8b4a63"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{brUsvoeniZalbi}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="374" width="280" height="30" uuid="94df3f41-d47e-4016-80e6-52a6912ed15a"/>
+                <text><![CDATA[8.  Број на преиначени првостепени одлуки по постапување на Агенцијата:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="220" y="380" width="100" height="30" uuid="7869403b-2c24-4891-b0ab-b6445b052d43"/>
+                <box topPadding="6"/>
+                <textFieldExpression><![CDATA[$F{brPreinaceniOdluki}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="410" width="420" height="30" uuid="7216baab-ed45-4b92-bc78-f3b29d92285d"/>
+                <text><![CDATA[9.  Број на одбиени жалби од Агенцијата и причини за нивно одбивање:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="60" y="440" width="420" height="90" uuid="fe01affc-970b-4f1c-9b4a-48b5561054ef"/>
+                <textFieldExpression><![CDATA[$F{odbieniZalbi}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="540" width="420" height="30" uuid="2f842b19-a896-4f27-9c00-d493006e2aa4"/>
+                <text><![CDATA[Број на отфрлени жалби од Агенцијата и причини за нивно отфрлање:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="60" y="570" width="420" height="120" uuid="61851e6b-b69c-4f33-9f21-982a188f702e"/>
+                <textFieldExpression><![CDATA[$F{otfrelniZalbi}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="60" y="700" width="402" height="46" uuid="ae977bf6-9d40-48a7-aec1-613442f34865"/>
+                <textElement>
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[НАПОМЕНА: Таксативно набележаните обврски од член 36 значат и Ваша обврска на истите да одговорите прецизно, со податоци, коментари и карактеристики што произлегуваат од Вашата работа.]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="2" splitType="Stretch"/>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="82" splitType="Stretch">
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="50" y="10" width="100" height="30" uuid="decdea03-e58c-44f1-8adc-904012510e35"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="280" y="52" width="200" height="30" uuid="ca64d201-6011-4c76-a912-79a56c6de8f8"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$F{sluzbLice}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="280" y="0" width="200" height="30" uuid="9124d492-1e92-4f53-ba85-fd9a044b7536"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$F{imatelInfo}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="38" splitType="Stretch"/>
+    </summary>
+</jasperReport>

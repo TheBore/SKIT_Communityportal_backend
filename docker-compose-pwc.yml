@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  web:
+    image: $CONTAINER_IMAGE
+    environment:
+      - DB_URL=jdbc:postgresql://172.18.0.1:5432/communityportal
+      - DB_USER=$DB_USER
+      - DB_PASS=$DB_PASS
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 60s
+      labels:
+        - traefik.frontend.rule=Host:community-portal.demo.protracco-project.mk;PathPrefix:/rest
+        - traefik.docker.network=traefik
+        - traefik.port=9091
+        - traefik.protocol=http
+        - traefik.enable=true
+        - traefik.tags=traefik
+        - traefik.redirectorservice.frontend.entryPoints=http
+        - traefik.redirectorservice.frontend.redirect.entryPoint=https
+        - traefik.webservice.frontend.entryPoints=https
+    networks:
+      - traefik
+      - private
+    external_links:
+      - postgres:postgres
+
+
+
+networks:
+  traefik:
+    external: true
+  private:
+    external: true

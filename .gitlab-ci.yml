@@ -1,0 +1,62 @@
+stages:
+  - build
+  - deploy
+  - undeploy
+
+variables:
+  CONTAINER_IMAGE: registry.gitlab.inteligenta.io:443/$CI_PROJECT_PATH
+
+build_image:
+  stage: build
+  image: docker:stable
+  variables:
+    DOCKER_HOST: tcp://dev.inteligenta.io:2376/
+    DOCKER_TLS_VERIFY: 1
+  services:
+    - docker:19.03-dind
+  before_script:
+    - mkdir ~/.docker
+    - echo -e $TLSCACERT > ~/.docker/ca.pem
+    - echo -e $TLSCERT > ~/.docker/cert.pem
+    - echo -e $TLSKEY > ~/.docker/key.pem
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CONTAINER_IMAGE  .
+    - docker push $CONTAINER_IMAGE
+  when: manual
+  allow_failure: true
+
+deploy_dksk:
+  stage: deploy
+  image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://dev.inteligenta.io:2376
+    DOCKER_TLS_VERIFY: 1
+  script:
+    - mkdir -p ~/.docker
+    - echo -e $TLSCACERT > ~/.docker/ca.pem
+    - echo -e $TLSCERT > ~/.docker/cert.pem
+    - echo -e $TLSKEY > ~/.docker/key.pem
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+    - docker stack deploy --with-registry-auth --compose-file=docker-compose-pwc-dksk.yml ${CI_PROJECT_NAME}-pwc-dksk
+  when: manual
+  allow_failure: true
+  environment:
+    name: dev
+
+undeploy_dksk:
+  stage: undeploy
+  image: docker:latest
+  variables:
+    DOCKER_HOST: tcp://dev.inteligenta.io:2376
+    DOCKER_TLS_VERIFY: 1
+  script:
+    - mkdir -p ~/.docker
+    - echo -e $TLSCACERT > ~/.docker/ca.pem
+    - echo -e $TLSCERT > ~/.docker/cert.pem
+    - echo -e $TLSKEY > ~/.docker/key.pem
+    - docker login -u gitlab-ci-token -p "$CI_BUILD_TOKEN" "$CI_REGISTRY"
+    - docker stack rm ${CI_PROJECT_NAME}-pwc-dksk
+  when: manual
+  allow_failure: true
+  
