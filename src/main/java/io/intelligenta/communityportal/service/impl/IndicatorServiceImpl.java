@@ -57,13 +57,15 @@ public class IndicatorServiceImpl extends BaseEntityCrudServiceImpl<Indicator, I
 
     @Override
     public Indicator createIndicator(IndicatorDto indicator) {
+        Indicator newIndicator = new Indicator();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Indicator newIndicator = new Indicator();
-
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            newIndicator.setCreatedByUser(user);
+            newIndicator.setUpdatedByUser(user);
+        }
         newIndicator.setIndicatorType(IndicatorType.valueOf(indicator.getType()));
 
         if(newIndicator.getIndicatorType() == IndicatorType.BOOLEAN){
@@ -89,8 +91,6 @@ public class IndicatorServiceImpl extends BaseEntityCrudServiceImpl<Indicator, I
         ActivityInstitution institution = activityInstitutionRepository.findById(indicator.getInstitution()).orElseThrow(InstitutionNotFoundException::new);
         newIndicator.setInstitution(institution);
 
-        newIndicator.setCreatedByUser(user);
-        newIndicator.setUpdatedByUser(user);
         newIndicator.setDateCreated(LocalDateTime.now());
         newIndicator.setDateUpdated(LocalDateTime.now());
         newIndicator.setActive(true);
@@ -104,10 +104,14 @@ public class IndicatorServiceImpl extends BaseEntityCrudServiceImpl<Indicator, I
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication!=null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedIndicator.setUpdatedByUser(user);
+        }
 
-        updatedIndicator.setUpdatedByUser(user);
+
         updatedIndicator.setDateUpdated(LocalDateTime.now());
 
         updatedIndicator.setNameMk(indicator.getNameMk());
@@ -133,11 +137,13 @@ public class IndicatorServiceImpl extends BaseEntityCrudServiceImpl<Indicator, I
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedIndicator.setUpdatedByUser(user);
+        }
 
         updatedIndicator.setActive(true);
-        updatedIndicator.setUpdatedByUser(user);
         updatedIndicator.setDateUpdated(LocalDateTime.now());
 
         return indicatorRepository.save(updatedIndicator);
@@ -149,11 +155,13 @@ public class IndicatorServiceImpl extends BaseEntityCrudServiceImpl<Indicator, I
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedIndicator.setDeletedByUser(user);
+        }
 
         updatedIndicator.setActive(false);
-        updatedIndicator.setDeletedByUser(user);
         updatedIndicator.setDateUpdated(LocalDateTime.now());
 
         return indicatorRepository.save(updatedIndicator);
