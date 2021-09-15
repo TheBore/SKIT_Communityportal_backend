@@ -11,7 +11,6 @@ import io.intelligenta.communityportal.models.report.ReportStatus;
 import io.intelligenta.communityportal.repository.*;
 import io.intelligenta.communityportal.repository.auth.UserRepository;
 import io.intelligenta.communityportal.service.PublicYearReportService;
-import io.intelligenta.communityportal.utils.ExportOfficeUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -121,7 +120,6 @@ public class PublicYearReportServiceImpl implements PublicYearReportService {
         map.put("otfrleniZalbi", pyr.getReport().getOtfrelniZalbi());
         map.put("date", date);
         String templateName = "izvestaj.ftl";
-        ExportOfficeUtils.generatePDF(templateName, map, outputFile);
 
         File attachment = new File(outputFile);
         byte[] content = readFileToByteArray(attachment);
