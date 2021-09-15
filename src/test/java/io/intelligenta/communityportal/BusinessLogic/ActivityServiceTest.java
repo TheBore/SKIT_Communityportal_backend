@@ -1,15 +1,13 @@
-package io.intelligenta.communityportal.BussinessLogic;
+package io.intelligenta.communityportal.BusinessLogic;
 
 import io.intelligenta.communityportal.models.*;
 import io.intelligenta.communityportal.models.dto.ActivityDto;
 import io.intelligenta.communityportal.models.exceptions.ActivityNotFoundException;
-import io.intelligenta.communityportal.models.exceptions.StatusNotFoundException;
 import io.intelligenta.communityportal.repository.*;
 import io.intelligenta.communityportal.repository.Mail.EmailRepository;
 import io.intelligenta.communityportal.repository.auth.UserRepository;
 import io.intelligenta.communityportal.service.ActivityService;
 import io.intelligenta.communityportal.service.impl.ActivityServiceImpl;
-import io.intelligenta.communityportal.service.impl.StatusServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,8 +1,6 @@
-package io.intelligenta.communityportal.BussinessLogic;
+package io.intelligenta.communityportal.BusinessLogic;
 
 import io.intelligenta.communityportal.models.*;
-import io.intelligenta.communityportal.models.auth.User;
-import io.intelligenta.communityportal.models.auth.UserRole;
 import io.intelligenta.communityportal.models.dto.MeasureDto;
 import io.intelligenta.communityportal.models.exceptions.MeasureNotFoundException;
 import io.intelligenta.communityportal.models.exceptions.MeasureWithoutProblemException;
@@ -13,7 +11,6 @@ import io.intelligenta.communityportal.repository.StatusRepository;
 import io.intelligenta.communityportal.repository.auth.UserRepository;
 import io.intelligenta.communityportal.service.MeasureService;
 import io.intelligenta.communityportal.service.impl.MeasureServiceImpl;
-import io.intelligenta.communityportal.service.impl.NAPServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +20,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

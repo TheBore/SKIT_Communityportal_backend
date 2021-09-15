@@ -1,4 +1,4 @@
-package io.intelligenta.communityportal.BussinessLogic;
+package io.intelligenta.communityportal.BusinessLogic;
 
 import io.intelligenta.communityportal.models.NAP;
 import io.intelligenta.communityportal.models.NAPArea;

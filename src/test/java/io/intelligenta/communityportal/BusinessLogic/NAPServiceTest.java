@@ -1,4 +1,4 @@
-package io.intelligenta.communityportal.BussinessLogic;
+package io.intelligenta.communityportal.BusinessLogic;
 
 import io.intelligenta.communityportal.models.*;
 import io.intelligenta.communityportal.models.auth.User;
@@ -21,9 +21,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
-import java.awt.print.Printable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
