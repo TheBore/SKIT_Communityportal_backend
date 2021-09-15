@@ -45,15 +45,17 @@ public class MeasureServiceImpl extends BaseEntityCrudServiceImpl<Measure, Measu
     @Override
     public Measure createMeasure(MeasureDto measureDto) {
 
-        //If we want to create a Measure without attachment and in that case if it throws any exception than we have to set mimeType, byte and content = null
-
+        //If we want to create a Measure without attachment and in that case
+        //if it throws any exception than we have to set mimeType, byte and content = null
+        Measure measure = new Measure();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Measure measure = new Measure();
-        measure.setCreatedByUser(user);
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            measure.setCreatedByUser(user);
+        }
         measure.setActive(measureDto.getActive());
         measure.setDateCreated(LocalDateTime.now());
         measure.setDateUpdated(LocalDateTime.now());
@@ -154,32 +156,32 @@ public class MeasureServiceImpl extends BaseEntityCrudServiceImpl<Measure, Measu
 
     @Override
     public Measure setInactive(Long id) {
+        Measure updatedMeasure = measureRepository.findById(id).orElseThrow(MeasureNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Measure updatedMeasure = measureRepository.findById(id).orElseThrow(MeasureNotFoundException::new);
-
+        if (authentication!= null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedMeasure.setDeletedByUser(user);
+        }
         updatedMeasure.setDateUpdated(LocalDateTime.now());
         updatedMeasure.setActive(false);
-        updatedMeasure.setDeletedByUser(user);
-
         return measureRepository.save(updatedMeasure);
     }
 
     @Override
     public Measure setActive(Long id) {
+        Measure updatedMeasure = measureRepository.findById(id).orElseThrow(MeasureNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Measure updatedMeasure = measureRepository.findById(id).orElseThrow(MeasureNotFoundException::new);
-
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedMeasure.setUpdatedByUser(user);
+        }
         updatedMeasure.setDateUpdated(LocalDateTime.now());
         updatedMeasure.setActive(true);
-        updatedMeasure.setUpdatedByUser(user);
 
         return measureRepository.save(updatedMeasure);
     }

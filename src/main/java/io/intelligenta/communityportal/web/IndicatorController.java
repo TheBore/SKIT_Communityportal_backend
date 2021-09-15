@@ -19,13 +19,13 @@ public class IndicatorController {
         this.indicatorService = indicatorService;
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
     public Page<Indicator> findAll(Pageable pageable){
         return indicatorService.findAllIndicators(pageable);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all-list")
     public List<Indicator> findAll(){
         return indicatorService.findAllIndicatorsList();
@@ -37,7 +37,7 @@ public class IndicatorController {
         return indicatorService.findAllIndicatorsByActivityId(id);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all-by-activity-page/{id}")
     public Page<Indicator> findAllPageByIndicatorId(@PathVariable Long id, Pageable pageable){
         return indicatorService.findAllIndicatorsPageByActivityId(id, pageable);

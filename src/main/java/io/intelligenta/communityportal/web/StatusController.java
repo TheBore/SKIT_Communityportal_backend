@@ -19,37 +19,37 @@ public class StatusController {
         this.statusService = statusService;
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public Status createStatus (@RequestBody Status status){
         return statusService.createStatus(status);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public Status findStatusById (@PathVariable Long id){
         return statusService.findStatusById(id);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
     public List<Status> findAllWithKeyword (@RequestParam("keyword") String keyword){
         return statusService.findAllWithKeyword(keyword);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @PutMapping("/update")
     public Status updateStatus (@RequestBody Status status){
         return statusService.updateStatus(status);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @DeleteMapping("/delete/{id}")
     public void deleteStatusById (@PathVariable Long id){
         statusService.deleteStatusById(id);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/getStatusesByType")
     public List<Status> getAllByType(@RequestParam String statusType){
         return statusService.findAll().stream().filter(status -> status.getStatusType().toString().equals(statusType)).collect(Collectors.toList());

@@ -21,54 +21,55 @@ public class NAPController extends CrudResource<NAP, NAPService> {
         this.napService = napService;
     }
 
-    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
+//    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
     @PostMapping("/create")
     public NAP createNAP (@RequestBody NAPDto nap){
         return napService.createNAP(nap);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
-    public NAP findById (@PathVariable(value = "id") Long id){
+    public NAP findById (@PathVariable(value = "id") Long id){//
         return napService.findById(id);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
     public Page<NAP> findAll (Pageable pageable){
         return napService.findAllByDateCreatedDesc(pageable);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all-list")
     public List<NAP> findAllList() {
-        return napService.findAllByDateCreatedDescAndActiveList(); }
+        return napService.findAllByDateCreatedDescAndActiveList(); }//
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all-recent")
     public List<NAP> findAllUnpaged() {
-        return napService.findAllByDateCreatedDescAndActiveList().stream().limit(2).collect(Collectors.toList()); }
+        return napService.findAllByDateCreatedDescAndActiveList().stream().limit(2).collect(Collectors.toList()); //
+    }
 
-    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
+//    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
     @PutMapping("/update/{id}")
     public NAP updateNAP (@RequestBody NAPDto nap, @PathVariable Long id){
-        return napService.updateNAP(nap, id);
+        return napService.updateNAP(nap, id);//
     }
 
-    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
+//    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
     @PostMapping("/delete/{id}")
     public NAP deleteNAP (@PathVariable (value = "id")Long id){
-        return napService.setInactive(id);
+        return napService.setInactive(id);//
     }
 
-    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
+//    @PreAuthorize("isAuthenticated() && (hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR'))")
     @PostMapping("/unDelete/{id}")
     public NAP unDeleteNAP (@PathVariable(value = "id")Long id){
         return napService.setActive(id);
     }
 
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN')")
     @PutMapping("/evaluation-status/{id}/{checked}")
     public void changeEvaluationStatus (@PathVariable Long id, @PathVariable String checked){
         napService.changeEvaluationStatus(checked.equals("true"), id);

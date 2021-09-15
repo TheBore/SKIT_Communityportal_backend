@@ -36,26 +36,23 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
     private final UserRepository userRepository;
     private final MeasureRepository measureRepository;
     private final StatusRepository statusRepository;
-    private final InstitutionRepository institutionRepository;
     private final ActivityInstitutionRepository activityInstitutionRepository;
-    private final EvaluationRepository evaluationRepository;
     private final IndicatorReportRepository indicatorReportRepository;
     private final EmailRepository emailRepository;
     private final Environment environment;
 
-    public ActivityServiceImpl(ActivityRepository activityRepository,
-                               UserRepository userRepository, MeasureRepository measureRepository, StatusRepository statusRepository, InstitutionRepository institutionRepository, ActivityInstitutionRepository activityInstitutionRepository, EvaluationRepository evaluationRepository, IndicatorReportRepository indicatorReportRepository, EmailRepository emailRepository, Environment environment) {
+    public ActivityServiceImpl(ActivityRepository activityRepository, UserRepository userRepository, MeasureRepository measureRepository, StatusRepository statusRepository, InstitutionRepository institutionRepository, ActivityInstitutionRepository activityInstitutionRepository, EvaluationRepository evaluationRepository, IndicatorReportRepository indicatorReportRepository, EmailRepository emailRepository, Environment environment) {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
         this.measureRepository = measureRepository;
         this.statusRepository = statusRepository;
-        this.institutionRepository = institutionRepository;
         this.activityInstitutionRepository = activityInstitutionRepository;
-        this.evaluationRepository = evaluationRepository;
         this.indicatorReportRepository = indicatorReportRepository;
         this.emailRepository = emailRepository;
         this.environment = environment;
     }
+
+
 
     @Override
     public Page<Activity> findAllActivities(Pageable pageable) {
@@ -69,12 +66,17 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
 
     @Override
     public Activity createActivity(ActivityDto activity) {
+        Activity newActivity = new Activity();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            newActivity.setCreatedByUser(user);
+            newActivity.setUpdatedByUser(user);
+        }
 
-        Activity newActivity = new Activity();
 
         newActivity.setNameMk(activity.getNameMk());
         newActivity.setNameAl(activity.getNameAl());
@@ -137,8 +139,6 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
         newActivity.setYearDate(yearDate);
         newActivity.setContinuously(activity.isContinuously());
 
-        newActivity.setCreatedByUser(user);
-        newActivity.setUpdatedByUser(user);
         newActivity.setActive(true);
         newActivity.setDateCreated(LocalDateTime.now());
         newActivity.setDateUpdated(LocalDateTime.now());
@@ -153,16 +153,17 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
 
     @Override
     public Activity updateActivity(ActivityDto activity, Long activityId) {
-            Activity updatedActivity = activityRepository.findById(activityId).orElseThrow(ActivityNotFoundException::new);
-
+        Activity updatedActivity = activityRepository.findById(activityId).orElseThrow(ActivityNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedActivity.setUpdatedByUser(user);
+        }
+
 
         updatedActivity.setDateUpdated(LocalDateTime.now());
-        updatedActivity.setUpdatedByUser(user);
-
         updatedActivity.setNameMk(activity.getNameMk());
         updatedActivity.setNameAl(activity.getNameAl());
         updatedActivity.setNameEn(activity.getNameEn());
@@ -233,11 +234,13 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedActivity.setUpdatedByUser(user);
+        }
 
         updatedActivity.setActive(true);
-        updatedActivity.setUpdatedByUser(user);
         updatedActivity.setDateUpdated(LocalDateTime.now());
 
         return activityRepository.save(updatedActivity);
@@ -249,11 +252,13 @@ public class ActivityServiceImpl extends BaseEntityCrudServiceImpl<Activity, Act
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedActivity.setDeletedByUser(user);
+        }
         updatedActivity.setActive(false);
-        updatedActivity.setDeletedByUser(user);
         updatedActivity.setDateUpdated(LocalDateTime.now());
 
         return activityRepository.save(updatedActivity);

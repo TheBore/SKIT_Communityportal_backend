@@ -19,43 +19,43 @@ public class NAPAreaTypeController {
         this.napAreaTypeService = napAreaTypeService;
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PostMapping("/create")
     public NAPAreaType createNAPAreaType (@RequestBody NAPAreaType napAreaType){
         return napAreaTypeService.createNAPAreaType(napAreaType);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @GetMapping("/{id}")
     public NAPAreaType getById (@PathVariable Long id){
         return napAreaTypeService.findById(id);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @GetMapping("/all")
     public Page<NAPAreaType> getAllPaged (@RequestParam("keyword") String keyword, Pageable pageable){
         return napAreaTypeService.findAllPagedWithKeyword(keyword, pageable);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @GetMapping("/allActive")
     public List<NAPAreaType> getAllActive(){
         return napAreaTypeService.findAllActive();
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/update")
     public NAPAreaType updateNAPAreaType (@RequestBody NAPAreaType napAreaType){
         return napAreaTypeService.updateNAPAreaType(napAreaType);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/delete/{id}")
     public NAPAreaType deleteNAPAreaType (@PathVariable Long id){
         return napAreaTypeService.setInactive(id);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/undelete/{id}")
     public NAPAreaType undeleteNAPAreaType (@PathVariable Long id){
         return napAreaTypeService.setActive(id);

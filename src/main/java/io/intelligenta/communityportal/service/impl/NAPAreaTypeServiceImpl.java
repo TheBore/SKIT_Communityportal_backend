@@ -26,7 +26,7 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     private final UserRepository userRepository;
 
 
-    public NAPAreaTypeServiceImpl (NAPAreaTypeRepository napAreaTypeRepository, UserRepository userRepository){
+    public NAPAreaTypeServiceImpl(NAPAreaTypeRepository napAreaTypeRepository, UserRepository userRepository) {
         this.napAreaTypeRepository = napAreaTypeRepository;
         this.userRepository = userRepository;
     }
@@ -36,11 +36,13 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     public NAPAreaType createNAPAreaType(NAPAreaType napAreaType) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
 
-        napAreaType.setDateCreated(LocalDateTime.now());
-        napAreaType.setCreatedByUser(user);
+        if (authentication != null) {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            napAreaType.setCreatedByUser(user);
+        }
+//        napAreaType.setDateCreated(LocalDateTime.now());
         napAreaType.setActive(true);
 
         return napAreaTypeRepository.save(napAreaType);
@@ -54,10 +56,9 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     @Override
     public Page<NAPAreaType> findAllPagedWithKeyword(String keyword, Pageable pageable) {
         keyword = keyword.toLowerCase();
-        if(!keyword.equals("null") && !keyword.equals("undefined") && !keyword.equals("")){
-            return napAreaTypeRepository.findAllByActivePaged(keyword,pageable);
-        }
-        else{
+        if (!keyword.equals("null") && !keyword.equals("undefined") && !keyword.equals("")) {
+            return napAreaTypeRepository.findAllByActivePaged(keyword, pageable);
+        } else {
             return napAreaTypeRepository.findAllByActiveNotPaged(pageable);
         }
     }
@@ -66,13 +67,15 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     public NAPAreaType updateNAPAreaType(NAPAreaType napAreaType) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
         NAPAreaType updatedNAPAreaType = napAreaTypeRepository.findById(napAreaType.getId()).orElseThrow(NAPAreaTypeNotFoundException::new);
 
-        updatedNAPAreaType.setUpdatedByUser(user);
-        updatedNAPAreaType.setDateUpdated(LocalDateTime.now());
+        if (authentication != null) {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedNAPAreaType.setUpdatedByUser(user);
+        }
+
+//        updatedNAPAreaType.setDateUpdated(LocalDateTime.now());
 
         updatedNAPAreaType.setNameMk(napAreaType.getNameMk());
         updatedNAPAreaType.setNameAl(napAreaType.getNameAl());
@@ -89,18 +92,21 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     public NAPAreaType setInactive(Long id) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        User user = null;
+
+        if (authentication != null) {
+            String email = authentication.getPrincipal().toString();
+            user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        }
 
         NAPAreaType napAreaType = napAreaTypeRepository.findById(id).orElseThrow(NAPAreaTypeNotFoundException::new);
 
-        if(napAreaType.getNapAreas().size() > 0){
+        if (napAreaType.getNapAreas().size() > 0) {
             throw new NapAreaTypeCanNotBeDeletedException();
-        }
-        else{
+        } else {
             napAreaType.setDateCreated(LocalDateTime.now());
-            napAreaType.setDeletedByUser(user);
             napAreaType.setActive(false);
+            napAreaType.setDeletedByUser(user);
 
             return napAreaTypeRepository.save(napAreaType);
         }
@@ -110,14 +116,18 @@ public class NAPAreaTypeServiceImpl implements NAPAreaTypeService {
     public NAPAreaType setActive(Long id) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        User user = null;
+
+        if (authentication != null) {
+            String email = authentication.getPrincipal().toString();
+            user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        }
 
         NAPAreaType napAreaType = napAreaTypeRepository.findById(id).orElseThrow(NAPAreaTypeNotFoundException::new);
 
         napAreaType.setDateUpdated(LocalDateTime.now());
-        napAreaType.setUpdatedByUser(user);
         napAreaType.setActive(true);
+        napAreaType.setUpdatedByUser(user);
 
         return napAreaTypeRepository.save(napAreaType);
     }

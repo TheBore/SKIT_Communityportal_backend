@@ -20,42 +20,42 @@ public class NAPAreaController {
         this.napAreaService = napAreaService;
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PostMapping("/create")
     public NAPArea createNapArea (@RequestBody NapAreaDto napArea){
-        return napAreaService.createNAPArea(napArea);
+        return napAreaService.createNAPArea(napArea);//
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public NAPArea findById (@PathVariable Long id){
-        return napAreaService.findById(id);
+        return napAreaService.findById(id);//
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @GetMapping("/all")
     public Page<NAPArea> findAllPaged (@RequestParam("keyword") String keyword, Pageable pageable){
         return napAreaService.findAllPaged(keyword, pageable);
     }
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
     @GetMapping("/allActive")
     public List<NAPArea> findAllActive () { return napAreaService.findAllList(); }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/update")
     public NAPArea updateNAPArea (@RequestBody NapAreaDto napArea){
         return napAreaService.updateNAPArea(napArea);
     }
 
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/delete/{id}")
     public NAPArea deleteNAPArea (@PathVariable Long id ){
         return napAreaService.setInactive(id);
     }
 
-    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
+//    @PreAuthorize("isAuthenticated() && hasRole('ROLE_ADMIN') || hasRole('ROLE_INSTITUTIONAL_MODERATOR')")
     @PutMapping("/undelete/{id}")
     public NAPArea undeleteNAPArea (@PathVariable Long id){
         return napAreaService.setActive(id);

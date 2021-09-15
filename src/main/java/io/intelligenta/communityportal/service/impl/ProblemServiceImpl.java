@@ -40,12 +40,15 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Problem createProblem(ProblemDto problem) {
+        Problem newProblem = new Problem();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            newProblem.setCreatedByUser(user);
+        }
 
-        Problem newProblem = new Problem();
 
         List<StrategyGoal> strategyGoalList = new ArrayList<>();
         for( int i = 0; i < problem.getStrategyGoals().size(); i++){
@@ -72,7 +75,6 @@ public class ProblemServiceImpl implements ProblemService {
         newProblem.setNapArea(napArea);
 
         newProblem.setDateCreated(LocalDateTime.now());
-        newProblem.setCreatedByUser(user);
         newProblem.setActive(true);
 
         return problemRepository.save(newProblem);
@@ -85,6 +87,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Page<Problem> findAllPaged(Pageable pageable) {
+
         return problemRepository.findAll(pageable);
     }
 
@@ -95,12 +98,14 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Problem updateProblem(ProblemDto problem) {
+        Problem updatedProblem = problemRepository.findById(problem.getId()).orElseThrow(ProblemNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Problem updatedProblem = problemRepository.findById(problem.getId()).orElseThrow(ProblemNotFoundException::new);
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedProblem.setUpdatedByUser(user);
+        }
 
         List<StrategyGoal> strategyGoalList = new ArrayList<>();
         if(problem.getStrategyGoals().size() != 0){
@@ -111,14 +116,10 @@ public class ProblemServiceImpl implements ProblemService {
             }
             updatedProblem.setStrategyGoals(strategyGoalList);
         }
-
-        updatedProblem.setUpdatedByUser(user);
         updatedProblem.setDateUpdated(LocalDateTime.now());
-
         updatedProblem.setNameMk(problem.getNameMk());
         updatedProblem.setNameAl(problem.getNameAl());
         updatedProblem.setNameEn(problem.getNameEn());
-
         updatedProblem.setDescriptionMk(problem.getDescriptionMk());
         updatedProblem.setDescriptionAl(problem.getDescriptionAl());
         updatedProblem.setDescriptionEn(problem.getDescriptionEn());
@@ -128,14 +129,16 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Problem setInactive(Long id) {
+        Problem problem = problemRepository.findById(id).orElseThrow(ProblemNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Problem problem = problemRepository.findById(id).orElseThrow(ProblemNotFoundException::new);
+        if(authentication!=null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            problem.setDeletedByUser(user);
+        }
         problem.setDateUpdated(LocalDateTime.now());
-        problem.setDeletedByUser(user);
         problem.setNapArea(null);
         problem.setActive(false);
 
@@ -144,14 +147,16 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Problem setActive(Long id) {
+        Problem problem = problemRepository.findById(id).orElseThrow(ProblemNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        Problem problem = problemRepository.findById(id).orElseThrow(ProblemNotFoundException::new);
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            problem.setUpdatedByUser(user);
+        }
         problem.setDateUpdated(LocalDateTime.now());
-        problem.setUpdatedByUser(user);
         problem.setActive(true);
 
         return problemRepository.save(problem);

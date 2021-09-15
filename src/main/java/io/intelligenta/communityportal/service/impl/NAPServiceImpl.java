@@ -47,13 +47,13 @@ public class NAPServiceImpl extends BaseEntityCrudServiceImpl<NAP, NAPRepository
     public NAP createNAP(NAPDto nap) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+
 
         NAP newNap = new NAP();
 
         Status status = statusRepository.findById(nap.getStatus()).orElseThrow(StatusNotFoundException::new);
         newNap.setStatus(status);
+
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
         LocalDate startDate = LocalDate.parse(nap.getStartDate(), formatter);
@@ -69,14 +69,18 @@ public class NAPServiceImpl extends BaseEntityCrudServiceImpl<NAP, NAPRepository
         newNap.setDescriptionAl(nap.getDescriptionAl());
         newNap.setDescriptionEn(nap.getDescriptionEn());
 
-        newNap.setCreatedByUser(user);
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            newNap.setCreatedByUser(user);
+        }
         newNap.setActive(true);
         newNap.setOpenForEvaluation(false);
 
         newNap.setDateCreated(LocalDateTime.now());
         newNap.setDateUpdated(LocalDateTime.now());
-
-        return napRepository.save(newNap);
+        napRepository.save(newNap);
+        return newNap;
     }
 
     @Override
@@ -97,10 +101,15 @@ public class NAPServiceImpl extends BaseEntityCrudServiceImpl<NAP, NAPRepository
     @Override
     public NAP updateNAP(NAPDto nap, Long napId) {
         NAP updatedNAP = napRepository.findById(napId).orElseThrow(NAPNotFoundException::new);
+
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedNAP.setUpdatedByUser(user);
+        }
+
 
         updatedNAP.setDateUpdated(LocalDateTime.now());
 
@@ -125,7 +134,6 @@ public class NAPServiceImpl extends BaseEntityCrudServiceImpl<NAP, NAPRepository
         updatedNAP.setStartDate(startDate);
         updatedNAP.setEndDate(endDate);
 //        //updatedNAP.setOpenForEvaluation(nap.getOpenForEvaluation());
-        updatedNAP.setUpdatedByUser(user);
 
         napRepository.save(updatedNAP);
 
@@ -134,32 +142,34 @@ public class NAPServiceImpl extends BaseEntityCrudServiceImpl<NAP, NAPRepository
 
     @Override
     public NAP setInactive(Long id) {
+        NAP updatedNAP = napRepository.findById(id).orElseThrow(NAPNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        NAP updatedNAP = napRepository.findById(id).orElseThrow(NAPNotFoundException::new);
-
+        if(authentication!=null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedNAP.setDeletedByUser(user);
+        }
         updatedNAP.setDateUpdated(LocalDateTime.now());
         updatedNAP.setActive(false);
-        updatedNAP.setDeletedByUser(user);
 
         return napRepository.save(updatedNAP);
     }
 
     @Override
     public NAP setActive(Long id) {
+        NAP updatedNAP = napRepository.findById(id).orElseThrow(NAPNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedNAP.setUpdatedByUser(user);
+        }
 
-        NAP updatedNAP = napRepository.findById(id).orElseThrow(NAPNotFoundException::new);
 
         updatedNAP.setDateUpdated(LocalDateTime.now());
         updatedNAP.setActive(true);
-        updatedNAP.setUpdatedByUser(user);
         updatedNAP.setDeletedByUser(null);
 
         return napRepository.save(updatedNAP);

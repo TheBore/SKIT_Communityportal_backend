@@ -40,12 +40,15 @@ public class NAPAreaServiceImpl implements NAPAreaService {
 
     @Override
     public NAPArea createNAPArea(NapAreaDto napAreaDto) {
+        NAPArea napArea = new NAPArea();
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        NAPArea napArea = new NAPArea();
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            napArea.setCreatedByUser(user);
+        }
 
         napArea.setNameMk(napAreaDto.getNameMk());
         napArea.setNameAl(napAreaDto.getNameAl());
@@ -57,8 +60,6 @@ public class NAPAreaServiceImpl implements NAPAreaService {
 
         NAPAreaType napAreaType = napAreaTypeRepository.findById(napAreaDto.getNapAreaTypeId()).orElseThrow(NAPAreaTypeNotFoundException::new);
         napArea.setNapAreaType(napAreaType);
-
-        napArea.setCreatedByUser(user);
         napArea.setDateCreated(LocalDateTime.now());
         napArea.setActive(true);
 
@@ -86,16 +87,16 @@ public class NAPAreaServiceImpl implements NAPAreaService {
 
     @Override
     public NAPArea updateNAPArea(NapAreaDto napAreaDto) {
+        NAPArea updatedNAPArea = napAreaRepository.findById(napAreaDto.getId())
+                .orElseThrow(NAPAreaNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-       NAPArea updatedNAPArea = napAreaRepository.findById(napAreaDto.getId()).orElseThrow(NAPAreaNotFoundException::new);
-
-       updatedNAPArea.setUpdatedByUser(user);
+        if(authentication != null){
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            updatedNAPArea.setUpdatedByUser(user);
+        }
        updatedNAPArea.setDateUpdated(LocalDateTime.now());
-
        updatedNAPArea.setNameMk(napAreaDto.getNameMk());
        updatedNAPArea.setNameAl(napAreaDto.getNameAl());
        updatedNAPArea.setNameEn(napAreaDto.getNameEn());
@@ -118,35 +119,38 @@ public class NAPAreaServiceImpl implements NAPAreaService {
 
     @Override
     public NAPArea setInactive(Long id) {
+        NAPArea napArea = napAreaRepository.findById(id).orElseThrow(NAPAreaNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        NAPArea napArea = napAreaRepository.findById(id).orElseThrow(NAPAreaNotFoundException::new);
-
         if(napArea.getProblems().size() > 0){
             throw new NapAreaCanNotBeDeletedException();
         }
         else{
             napArea.setDateUpdated(LocalDateTime.now());
             napArea.setActive(false);
-            napArea.setDeletedByUser(user);
             napArea.setNapAreaType(null);
-
+            if(authentication != null)
+            {
+                String email = authentication.getPrincipal().toString();
+                User user = userRepository.findByEmailAndActive(email, true)
+                        .orElseThrow(UserNotFoundException::new);
+                napArea.setDeletedByUser(user);
+            }
             return napAreaRepository.save(napArea);
         }
     }
 
     @Override
     public NAPArea setActive(Long id) {
+        NAPArea napArea = napAreaRepository.findById(id).orElseThrow(NAPAreaNotFoundException::new);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String email = authentication.getPrincipal().toString();
-        User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
-
-        NAPArea napArea = napAreaRepository.findById(id).orElseThrow(NAPAreaNotFoundException::new);
-        napArea.setUpdatedByUser(user);
+        if(authentication != null)
+        {
+            String email = authentication.getPrincipal().toString();
+            User user = userRepository.findByEmailAndActive(email, true).orElseThrow(UserNotFoundException::new);
+            napArea.setUpdatedByUser(user);
+        }
         napArea.setDateUpdated(LocalDateTime.now());
         napArea.setActive(true);
 
